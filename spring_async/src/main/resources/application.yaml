@@ -1,0 +1,16 @@
+resteasy:
+  jaxrs:
+    app:
+      registration: property
+      classes: com.savdev.demo.async.rest.config.JakartaWsConfiguration
+
+logging:
+  level:
+    com:
+      savdev:
+        demo:
+          async: debug
+    org:
+      springframework: info
+      jboss:
+        resteasy: info

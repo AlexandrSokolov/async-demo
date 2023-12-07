@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  app:
+    image: 'sav-dev-demo-spring-async:latest'
+    build:
+      context: .
+    container_name: sav-dev-app
+    networks:
+      - sav-dev-net
+    ports:
+      - "8080:8080"
+      - "8787:8787"
+    environment:
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8787
+      - JAVA_TOOL_OPTIONS=
+          -Dserver.servlet.context-path=/sav
+
+networks:
+  sav-dev-net:
