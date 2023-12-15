@@ -67,7 +67,7 @@ By default, `@EnableAsync` detects both Spring’s `@Async` annotation and the E
 ### Async methods in Spring
 
 1. Java class that contains async methods must be Spring bean (`@Service` or `@Component`)
-2. Spring’s `@Async` must be applied to public methods only, so that it can be proxied.
+2. Spring’s `@Async` can be applied to public methods only, so that it can be proxied.
 3. Self-invocation — calling the async method from within the same class — won’t work 
     because it bypasses the proxy and calls the underlying method directly:
     ```java
@@ -161,7 +161,7 @@ By default, `@EnableAsync` detects both Spring’s `@Async` annotation and the E
 
 ### Running not-async methods via async helper
 
-1. All tasks that takes time to implement are not defined with async method. 
+1. All heavy tasks that takes time to execute are not defined as async method. 
     They are plain java object, that returns result, [See `Task`](src/main/java/com/savdev/demo/async/domain/Task.java).
 2. We create an async wrapper/utility class, [see `AsyncWrapper`](src/main/java/com/savdev/demo/async/domain/AsyncWrapper.java):
     ```java
@@ -193,3 +193,14 @@ By default, `@EnableAsync` detects both Spring’s `@Async` annotation and the E
     }
     ```
     [See `TasksRestService#fireAsyncViaWrapper`](src/main/java/com/savdev/demo/async/rest/service/TasksRestService.java)
+
+Benefits:
+- you can run in async way any method, not only public one
+- can be used as a solution for the `self-invocation` issue
+
+Issues/disadvantages of using the async helper:
+- responsibility of control, how a heavy method is executed, in async or sync way, 
+  gets moved to the client of this heavy method. As a result it takes more effort for the client to apply async logic
+- code readability suffers. For a developer, who does not know the purpose of the async wrapper, 
+  it might be an issue to understand it quickly.
+- 
